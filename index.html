@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цветочный магазин</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        .hero-banner {
+            position: relative;
+            background: url("images/hero.jpg") center/cover no-repeat;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            backdrop-filter: blur(2px);
+        }
+
+        .hero-title,
+        .hero-description,
+        .hero-banner .glass-card {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="#" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="#" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="#" class="menu-item active"><i class="fas fa-home"></i> Главная</a>
+                    <a href="#" class="menu-item"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="#" class="menu-item"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="#" class="menu-item"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="#" class="menu-item"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="#" class="menu-item"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="#" class="menu-item"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="#" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Герой-баннер -->
+            <div class="hero-banner">
+                <h1 class="hero-title">Прекрасные цветы для ваших моментов</h1>
+                <p class="hero-description">Создаем уникальные букеты и композиции, которые подчеркнут ваши эмоции</p>
+                <button class="glass-card" style="display: inline-block; width: auto; padding: 15px 30px;">
+                    В каталог <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Категории -->
+            <div class="content-block">
+                <h2 class="content-title">Категории</h2>
+                <div class="grid grid-4">
+                    <div class="glass-card category ">
+                        <div class="glass-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <div class="glass-text">Букеты</div>
+                    </div>
+                    <div class="glass-card category">
+                        <div class="glass-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="glass-text">Горшечные</div>
+                    </div>
+                    <div class="glass-card category">
+                        <div class="glass-icon">
+                            <i class="fas fa-ring"></i>
+                        </div>
+                        <div class="glass-text">Свадебные</div>
+                    </div>
+                    <div class="glass-card category">
+                        <div class="glass-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="glass-text">Подарки</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Популярные товары -->
+            <div class="content-block">
+                <h2 class="content-title">Популярные товары</h2>
+                <div class="grid grid-3">
+                    <div class="glass-card product">
+                        <div class="glass-icon">
+                            <i class="fas fa-rose"></i>
+                        </div>
+                        <div class="glass-text">Товар 1</div>
+                    </div>
+                    <div class="glass-card product">
+                        <div class="glass-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="glass-text">Товар 2</div>
+                    </div>
+                    <div class="glass-card product">
+                        <div class="glass-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="glass-text">Товар 3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Преимущества -->
+            <div class="content-block">
+                <h2 class="content-title">Преимущества</h2>
+                <div class="grid grid-4">
+                    <div class="glass-card feature">
+                        <div class="glass-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="glass-text">Быстрая доставка</div>
+                    </div>
+                    <div class="glass-card feature">
+                        <div class="glass-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="glass-text">Качество</div>
+                    </div>
+                    <div class="glass-card feature">
+                        <div class="glass-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <div class="glass-text">Забота</div>
+                    </div>
+                    <div class="glass-card feature">
+                        <div class="glass-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="glass-text">Поддержка</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                        <p class="footer-description">
+                            Создаем уникальные цветочные композиции с когда-то года. 
+                            Доставляем красоту и эмоции по всему городу Ниафроуссити.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link messenger">
+                                <i class="fas fa-comment-dots"></i> 
+                            </a>
+                            <a href="#" class="social-link rutube">
+                                <i class="fas fa-video"></i> 
+                            </a>
+                            <a href="#" class="social-link vk">
+                                <i class="fab fa-vk"></i>
+                            </a>
+                            <a href="#" class="social-link telegram">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                        </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
