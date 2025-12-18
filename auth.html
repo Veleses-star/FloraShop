@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация и регистрация | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфичные стили для страницы авторизации */
+        .auth-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .page-subtitle,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        /* Основной контент */
+        .auth-content {
+            max-width: 500px;
+            margin: 0 auto 50px;
+        }
+        
+        /* Карточка авторизации */
+        .auth-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .auth-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* Вкладки */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 35px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .auth-tab:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .auth-tab.active {
+            color: #fff;
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            box-shadow: 0 5px 15px rgba(15, 111, 56, 0.3);
+        }
+        
+        /* Формы */
+        .auth-form {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .auth-form.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .form-label .required {
+            color: #ff4757;
+            margin-left: 3px;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-input.error {
+            border-color: #ff4757;
+            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+        }
+        
+        .error-message {
+            color: #ff4757;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Поле с иконкой */
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        /* Чекбоксы */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: #0f6f38;
+            cursor: pointer;
+        }
+        
+        .checkbox-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-label a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+        }
+        
+        .checkbox-label a:hover {
+            color: #fff;
+        }
+        
+        /* Вспомогательные ссылки */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .forgot-password {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-password:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        /* Основные кнопки */
+        .auth-button {
+            width: 100%;
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .auth-button:hover {
+            background: linear-gradient(135deg, #1d8c4a, #27a359);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 111, 56, 0.4);
+        }
+        
+        .auth-button:active {
+            transform: translateY(0);
+        }
+        
+        .auth-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+        }
+        
+        .auth-button:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Социальная авторизация */
+        .social-auth {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            margin-top: 30px;
+        }
+        
+        .social-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .social-button {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .social-button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .social-button.google:hover {
+            background: #DB4437;
+            color: white;
+            border-color: #DB4437;
+        }
+        
+        .social-button.vk:hover {
+            background: #4C75A3;
+            color: white;
+            border-color: #4C75A3;
+        }
+        
+        .social-button.telegram:hover {
+            background: #0088cc;
+            color: white;
+            border-color: #0088cc;
+        }
+        
+        /* Информация после авторизации */
+        .auth-footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 2.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .auth-header {
+                padding: 30px 20px;
+            }
+            
+            .auth-card {
+                padding: 35px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .auth-card {
+                padding: 30px;
+            }
+            
+            .auth-tab {
+                font-size: 1rem;
+                padding: 12px;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .auth-header {
+                padding: 25px 15px;
+            }
+            
+            .auth-card {
+                padding: 25px 20px;
+            }
+            
+            .auth-tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (без меню для страницы авторизации) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top" style="justify-content: center; border-bottom: none;">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка страницы -->
+            <div class="auth-header">
+                <h1 class="page-title">Личный кабинет</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="auth.html">Вход / Регистрация</a>
+                </div>
+                <p class="page-subtitle">
+                    Войдите в аккаунт или создайте новый, чтобы получить доступ к бонусам и истории заказов.
+                </p>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="auth-content">
+                <div class="auth-card">
+                    <!-- Вкладки -->
+                    <div class="auth-tabs">
+                        <div class="auth-tab active" data-tab="login">Вход</div>
+                        <div class="auth-tab" data-tab="register">Регистрация</div>
+                    </div>
+
+                    <!-- Форма входа -->
+                    <form class="auth-form active" id="login-form" onsubmit="return login(event)">
+                        <div class="form-group">
+                            <label for="loginEmail" class="form-label">
+                                Email <span class="required">*</span>
+                            </label>
+                            <input type="email" id="loginEmail" class="form-input" placeholder="example@mail.ru" required>
+                            <div class="error-message" id="loginEmailError">Введите корректный email</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword" class="form-label">
+                                Пароль <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="password" id="loginPassword" class="form-input" placeholder="Введите пароль" required>
+                                <span class="input-icon" id="toggleLoginPassword">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <div class="error-message" id="loginPasswordError">Введите пароль</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-options">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="remember" class="checkbox-input">
+                                    <label for="remember" class="checkbox-label">Запомнить меня</label>
+                                </div>
+                                <a href="#" class="forgot-password" onclick="showForgotPassword()">Забыли пароль?</a>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="auth-button">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </button>
+                        
+                        <div class="social-auth">
+                            <div class="social-title">Или войдите с помощью:</div>
+                            <div class="social-buttons">
+                                <button type="button" class="social-button google" onclick="socialLogin('google')">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                                <button type="button" class="social-button vk" onclick="socialLogin('vk')">
+                                    <i class="fab fa-vk"></i> VK
+                                </button>
+                                <button type="button" class="social-button telegram" onclick="socialLogin('telegram')">
+                                    <i class="fab fa-telegram"></i> Telegram
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Форма регистрации -->
+                    <form class="auth-form" id="register-form" onsubmit="return register(event)">
+                        <div class="form-group">
+                            <label for="firstName" class="form-label">
+                                Имя <span class="required">*</span>
+                            </label>
+                            <input type="text" id="firstName" class="form-input" placeholder="Иван" required>
+                            <div class="error-message" id="firstNameError">Введите ваше имя</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName" class="form-label">
+                                Фамилия <span class="required">*</span>
+                            </label>
+                            <input type="text" id="lastName" class="form-input" placeholder="Иванов" required>
+                            <div class="error-message" id="lastNameError">Введите вашу фамилию</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerEmail" class="form-label">
+                                Email <span class="required">*</span>
+                            </label>
+                            <input type="email" id="registerEmail" class="form-input" placeholder="example@mail.ru" required>
+                            <div class="error-message" id="registerEmailError">Введите корректный email</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerPhone" class="form-label">
+                                Телефон
+                            </label>
+                            <input type="tel" id="registerPhone" class="form-input" placeholder="+7 (999) 123-45-67">
+                            <div class="error-message" id="registerPhoneError">Введите корректный телефон</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerPassword" class="form-label">
+                                Пароль <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="password" id="registerPassword" class="form-input" placeholder="Не менее 6 символов" required>
+                                <span class="input-icon" id="toggleRegisterPassword">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <div class="error-message" id="registerPasswordError">Пароль должен содержать не менее 6 символов</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">
+                                Подтверждение пароля <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <input type="password" id="confirmPassword" class="form-input" placeholder="Повторите пароль" required>
+                                <span class="input-icon" id="toggleConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <div class="error-message" id="confirmPasswordError">Пароли не совпадают</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="agree" class="checkbox-input" required>
+                                <label for="agree" class="checkbox-label">
+                                    Я согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a>
+                                    <span class="required">*</span>
+                                </label>
+                            </div>
+                            <div class="error-message" id="agreeError">Необходимо принять условия</div>
+                        </div>
+                        
+                        <button type="submit" class="auth-button">
+                            <i class="fas fa-user-plus"></i> Зарегистрироваться
+                        </button>
+                        
+                        <div class="social-auth">
+                            <div class="social-title">Или зарегистрируйтесь с помощью:</div>
+                            <div class="social-buttons">
+                                <button type="button" class="social-button google" onclick="socialRegister('google')">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                                <button type="button" class="social-button vk" onclick="socialRegister('vk')">
+                                    <i class="fab fa-vk"></i> VK
+                                </button>
+                                <button type="button" class="social-button telegram" onclick="socialRegister('telegram')">
+                                    <i class="fab fa-telegram"></i> Telegram
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Форма восстановления пароля (скрыта по умолчанию) -->
+                    <form class="auth-form" id="forgot-form" onsubmit="return resetPassword(event)">
+                        <div class="form-group">
+                            <label for="resetEmail" class="form-label">
+                                Email <span class="required">*</span>
+                            </label>
+                            <input type="email" id="resetEmail" class="form-input" placeholder="example@mail.ru" required>
+                            <div class="error-message" id="resetEmailError">Введите корректный email</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem; line-height: 1.5;">
+                                На указанный email будет отправлена ссылка для восстановления пароля.
+                            </p>
+                        </div>
+                        
+                        <button type="submit" class="auth-button">
+                            <i class="fas fa-redo"></i> Восстановить пароль
+                        </button>
+                        
+                        <div class="form-group" style="text-align: center; margin-top: 20px;">
+                            <a href="#" class="forgot-password" onclick="showLoginForm()">
+                                <i class="fas fa-arrow-left"></i> Вернуться к входу
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Информация после авторизации -->
+                <div class="auth-footer">
+                    <p>После авторизации вы будете перенаправлены в личный кабинет, где сможете:</p>
+                    <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
+                        <li>Просматривать историю заказов</li>
+                        <li>Отслеживать статус текущих заказов</li>
+                        <li>Получать персональные скидки и предложения</li>
+                        <li>Сохранять избранные товары</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал (упрощенный) -->
+        <footer class="footer" style="margin-top: 40px; background: rgba(25, 25, 25, 0.7);">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия использования</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Переключение между формами
+        function switchTab(tabId) {
+            // Убираем активный класс у всех вкладок
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Добавляем активный класс текущей вкладке
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Скрываем все формы
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Показываем соответствующую форму
+            document.getElementById(`${tabId}-form`).classList.add('active');
+            
+            // Сбрасываем ошибки
+            clearErrors();
+        }
+        
+        // Показать форму входа
+        function showLoginForm() {
+            switchTab('login');
+        }
+        
+        // Показать форму восстановления пароля
+        function showForgotPassword() {
+            // Скрываем все формы
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Показываем форму восстановления
+            document.getElementById('forgot-form').classList.add('active');
+            
+            // Сбрасываем ошибки
+            clearErrors();
+        }
+        
+        // Очистка ошибок
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.form-input').forEach(el => {
+                el.classList.remove('error');
+            });
+        }
+        
+        // Показать ошибку
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errorElement = document.getElementById(`${inputId}Error`);
+            
+            if (input && errorElement) {
+                input.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                input.focus();
+            }
+        }
+        
+        // Валидация email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        // Маска для телефона
+        function setupPhoneMask() {
+            const phoneInput = document.getElementById('registerPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        if (!value.startsWith('7') && !value.startsWith('8')) {
+                            value = '7' + value;
+                        }
+                        
+                        let formatted = '+7 (';
+                        if (value.length > 1) formatted += value.substring(1, 4);
+                        if (value.length >= 4) formatted += ') ' + value.substring(4, 7);
+                        if (value.length >= 7) formatted += '-' + value.substring(7, 9);
+                        if (value.length >= 9) formatted += '-' + value.substring(9, 11);
+                        
+                        e.target.value = formatted.substring(0, 18);
+                    }
+                });
+            }
+        }
+        
+        // Переключение видимости пароля
+        function setupPasswordToggle() {
+            const toggles = ['toggleLoginPassword', 'toggleRegisterPassword', 'toggleConfirmPassword'];
+            
+            toggles.forEach(toggleId => {
+                const toggle = document.getElementById(toggleId);
+                if (toggle) {
+                    toggle.addEventListener('click', function() {
+                        const inputId = this.id.replace('toggle', '').toLowerCase();
+                        const input = document.getElementById(inputId);
+                        
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                        } else {
+                            input.type = 'password';
+                            this.innerHTML = '<i class="fas fa-eye"></i>';
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Вход в систему
+        function login(event) {
+            event.preventDefault();
+            clearErrors();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            let isValid = true;
+            
+            // Валидация email
+            if (!email) {
+                showError('loginEmail', 'Введите email');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('loginEmail', 'Введите корректный email');
+                isValid = false;
+            }
+            
+            // Валидация пароля
+            if (!password) {
+                showError('loginPassword', 'Введите пароль');
+                isValid = false;
+            }
+            
+            if (!isValid) return false;
+            
+            // Имитация запроса на сервер
+            const loginButton = document.querySelector('#login-form .auth-button');
+            const originalText = loginButton.innerHTML;
+            
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Вход...';
+            loginButton.disabled = true;
+            
+            setTimeout(() => {
+                // В реальном проекте здесь будет запрос на сервер
+                console.log('Вход:', { email, password });
+                
+                // Имитация успешного входа
+                loginButton.innerHTML = '<i class="fas fa-check"></i> Успешно!';
+                loginButton.style.background = 'linear-gradient(135deg, #1d8c4a, #27a359)';
+                
+                // Перенаправление в личный кабинет
+                setTimeout(() => {
+                    alert('Добро пожаловать в личный кабинет!');
+                    window.location.href = 'index.html'; // В реальном проекте будет страница ЛК
+                }, 1500);
+                
+            }, 2000);
+            
+            return false;
+        }
+        
+        // Регистрация
+        function register(event) {
+            event.preventDefault();
+            clearErrors();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const agree = document.getElementById('agree').checked;
+            
+            let isValid = true;
+            
+            // Валидация имени
+            if (!firstName) {
+                showError('firstName', 'Введите ваше имя');
+                isValid = false;
+            }
+            
+            // Валидация фамилии
+            if (!lastName) {
+                showError('lastName', 'Введите вашу фамилию');
+                isValid = false;
+            }
+            
+            // Валидация email
+            if (!email) {
+                showError('registerEmail', 'Введите email');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('registerEmail', 'Введите корректный email');
+                isValid = false;
+            }
+            
+            // Валидация телефона (необязательно)
+            if (phone) {
+                const phoneRegex = /^\+7\s?\(?\d{3}\)?\s?\d{3}-\d{2}-\d{2}$/;
+                if (!phoneRegex.test(phone)) {
+                    showError('registerPhone', 'Введите корректный телефон');
+                    isValid = false;
+                }
+            }
+            
+            // Валидация пароля
+            if (!password) {
+                showError('registerPassword', 'Введите пароль');
+                isValid = false;
+            } else if (password.length < 6) {
+                showError('registerPassword', 'Пароль должен содержать не менее 6 символов');
+                isValid = false;
+            }
+            
+            // Подтверждение пароля
+            if (!confirmPassword) {
+                showError('confirmPassword', 'Подтвердите пароль');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('confirmPassword', 'Пароли не совпадают');
+                isValid = false;
+            }
+            
+            // Согласие с условиями
+            if (!agree) {
+                showError('agree', 'Необходимо принять условия использования');
+                isValid = false;
+            }
+            
+            if (!isValid) return false;
+            
+            // Имитация запроса на сервер
+            const registerButton = document.querySelector('#register-form .auth-button');
+            const originalText = registerButton.innerHTML;
+            
+            registerButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
+            registerButton.disabled = true;
+            
+            setTimeout(() => {
+                // В реальном проекте здесь будет запрос на сервер
+                console.log('Регистрация:', { firstName, lastName, email, phone, password });
+                
+                // Имитация успешной регистрации
+                registerButton.innerHTML = '<i class="fas fa-check"></i> Успешно!';
+                registerButton.style.background = 'linear-gradient(135deg, #1d8c4a, #27a359)';
+                
+                // Перенаправление или переход на форму входа
+                setTimeout(() => {
+                    alert('Регистрация успешно завершена! Теперь вы можете войти в систему.');
+                    switchTab('login');
+                    
+                    // Сбрасываем кнопку
+                    registerButton.innerHTML = originalText;
+                    registerButton.disabled = false;
+                    registerButton.style.background = 'linear-gradient(135deg, #0f6f38, #1d8c4a)';
+                    
+                    // Очищаем форму регистрации
+                    document.getElementById('register-form').reset();
+                }, 1500);
+                
+            }, 2000);
+            
+            return false;
+        }
+        
+        // Восстановление пароля
+        function resetPassword(event) {
+            event.preventDefault();
+            clearErrors();
+            
+            const email = document.getElementById('resetEmail').value.trim();
+            
+            // Валидация email
+            if (!email) {
+                showError('resetEmail', 'Введите email');
+                return false;
+            }
+            
+            if (!validateEmail(email)) {
+                showError('resetEmail', 'Введите корректный email');
+                return false;
+            }
+            
+            // Имитация запроса на сервер
+            const resetButton = document.querySelector('#forgot-form .auth-button');
+            const originalText = resetButton.innerHTML;
+            
+            resetButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+            resetButton.disabled = true;
+            
+            setTimeout(() => {
+                // В реальном проекте здесь будет запрос на сервер
+                console.log('Восстановление пароля:', { email });
+                
+                // Имитация успеха
+                resetButton.innerHTML = '<i class="fas fa-check"></i> Отправлено!';
+                resetButton.style.background = 'linear-gradient(135deg, #1d8c4a, #27a359)';
+                
+                // Информация пользователю
+                setTimeout(() => {
+                    alert(`Инструкция по восстановлению пароля отправлена на email: ${email}\n\nПроверьте вашу почту.`);
+                    showLoginForm();
+                    
+                    // Сбрасываем кнопку
+                    resetButton.innerHTML = originalText;
+                    resetButton.disabled = false;
+                    resetButton.style.background = 'linear-gradient(135deg, #0f6f38, #1d8c4a)';
+                    
+                    // Очищаем форму
+                    document.getElementById('resetEmail').value = '';
+                }, 1500);
+                
+            }, 2000);
+            
+            return false;
+        }
+        
+        // Социальная авторизация
+        function socialLogin(provider) {
+            console.log(`Социальный вход через ${provider}`);
+            // В реальном проекте здесь будет OAuth авторизация
+            alert(`Вход через ${provider} (в демо-версии не реализован)`);
+        }
+        
+        function socialRegister(provider) {
+            console.log(`Социальная регистрация через ${provider}`);
+            // В реальном проекте здесь будет OAuth регистрация
+            alert(`Регистрация через ${provider} (в демо-версии не реализован)`);
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Настройка переключения вкладок
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Настройка масок и переключателей
+            setupPhoneMask();
+            setupPasswordToggle();
+            
+            // Валидация при вводе
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    const errorId = this.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Анимация при наведении на социальные кнопки
+            document.querySelectorAll('.social-button').forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

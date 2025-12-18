@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Букет "Романтика" | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфичные стили для страницы товара */
+        .product-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        /* Основная часть товара */
+        .product-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Галерея изображений */
+        .product-gallery {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .main-image {
+            height: 400px;
+            background: linear-gradient(135deg, rgba(123, 167, 142, 0.3), rgba(157, 186, 170, 0.2));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .thumbnail-gallery {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .thumbnail:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .thumbnail.active {
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Информация о товаре */
+        .product-info {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .product-header-info {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+        
+        .product-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .product-category {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stars {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+        
+        .rating-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .product-price-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .price-current {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        
+        .price-old {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+        
+        .product-description {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        
+        /* Форма покупки */
+        .buy-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 5px;
+            width: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .quantity-input {
+            width: 60px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .btn-primary, .btn-secondary {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d8c4a, #27a359);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 111, 56, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Характеристики товара */
+        .product-specs {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .specs-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .spec-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .spec-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .spec-value {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        /* Похожие товары */
+        .related-products {
+            margin-bottom: 40px;
+        }
+        
+        .related-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .related-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .related-image {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(123, 167, 142, 0.3), rgba(157, 186, 170, 0.2));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .related-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .related-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: auto;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .related-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .product-main {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-image {
+                height: 350px;
+            }
+            
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .product-header {
+                padding: 20px;
+            }
+            
+            .product-name {
+                font-size: 1.8rem;
+            }
+            
+            .price-current {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-image {
+                height: 250px;
+                font-size: 4rem;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .product-name {
+                font-size: 1.5rem;
+            }
+            
+            .price-current {
+                font-size: 1.8rem;
+            }
+            
+            .btn-primary, .btn-secondary {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            
+            .product-gallery,
+            .product-info,
+            .product-specs {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (одинаковая с главной страницей) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Главная</a>
+                    <a href="catalog.html" class="menu-item"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="products.html" class="menu-item active"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="delivery.html" class="menu-item"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="contacts.html" class="menu-item"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="checkout.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                    <a href="adminPanel.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Админ Панель</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка товара -->
+            <div class="product-header">
+                <h1 class="page-title">Страница товара</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="catalog.html">Каталог</a>
+                    <span>→</span>
+                    <a href="catalog.html?category=букеты">Букеты</a>
+                    <span>→</span>
+                    <a href="#">Розы</a>
+                </div>
+            </div>
+
+            <!-- Основная часть товара -->
+            <div class="product-main">
+                <!-- Галерея изображений -->
+                <div class="product-gallery">
+                    <div class="main-image" id="mainImage">
+                        <i class="fas fa-rose"></i>
+                    </div>
+                    <div class="thumbnail-gallery">
+                        <div class="thumbnail active" data-image="1">
+                            <i class="fas fa-rose"></i>
+                        </div>
+                        <div class="thumbnail" data-image="2">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="thumbnail" data-image="3">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="thumbnail" data-image="4">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Информация о товаре -->
+                <div class="product-info">
+                    <div class="product-header-info">
+                        <div class="product-category">Букеты • Розы</div>
+                        <h2 class="product-name">Букет "Романтика"</h2>
+                        <div class="product-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-text">4.5 (28 отзывов)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price-section">
+                        <div>
+                            <div class="price-current">2 500 ₽</div>
+                        </div>
+                        <div style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-check-circle"></i> В наличии
+                        </div>
+                    </div>
+                    
+                    <div class="product-description">
+                        Нежные розы и пионы в изысканной композиции. Этот букет создан для особых моментов: 
+                        признаний в любви, романтических свиданий или просто для того, чтобы поднять настроение 
+                        близкому человеку. Каждый цветок отбирается вручную для создания идеальной гармонии.
+                    </div>
+                    
+                    <div class="buy-form">
+                        <div class="form-group">
+                            <div class="form-label">Количество:</div>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="text" class="quantity-input" value="1" readonly>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-primary">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                            <button class="btn-secondary">
+                                <i class="fas fa-heart"></i> В избранное
+                            </button>
+                        </div>
+                        
+                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-top: 15px;">
+                            <i class="fas fa-truck"></i> Бесплатная доставка при заказе от 3 000 ₽
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Характеристики товара -->
+            <div class="product-specs">
+                <h3 class="specs-title">Характеристики</h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-label">Состав</div>
+                        <div class="spec-value">15 роз, 5 пионов, декоративная зелень</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Размер букета</div>
+                        <div class="spec-value">40×50 см</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Упаковка</div>
+                        <div class="spec-value">Крафтовая бумага, лента</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Срок доставки</div>
+                        <div class="spec-value">2-4 часа по городу</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Свежесть цветов</div>
+                        <div class="spec-value">Срезаны сегодня утром</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Аромат</div>
+                        <div class="spec-value">Нежный цветочный</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Вес</div>
+                        <div class="spec-value">1.2 кг</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Страна происхождения</div>
+                        <div class="spec-value">Эквадор (розы), Голландия (пионы)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Похожие товары -->
+            <div class="related-products">
+                <h3 class="related-title">Похожие товары</h3>
+                <div class="related-grid">
+                    <div class="related-card">
+                        <div class="related-image">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="related-name">Орхидея белая</div>
+                        <div class="related-price">3 200 ₽</div>
+                    </div>
+                    <div class="related-card">
+                        <div class="related-image">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="related-name">Свадебный букет</div>
+                        <div class="related-price">4 500 ₽</div>
+                    </div>
+                    <div class="related-card">
+                        <div class="related-image">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="related-name">Весенний микс</div>
+                        <div class="related-price">1 800 ₽</div>
+                    </div>
+                    <div class="related-card">
+                        <div class="related-image">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="related-name">Фикус Бенджамина</div>
+                        <div class="related-price">2 100 ₽</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал (одинаковый с главной страницей) -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link messenger">
+                            <i class="fas fa-comment-dots"></i> 
+                        </a>
+                        <a href="#" class="social-link rutube">
+                            <i class="fas fa-video"></i> 
+                        </a>
+                        <a href="#" class="social-link vk">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="catalog.html"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="products.html"><i class="fas fa-chevron-right"></i> Товары</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="delivery.html"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Взаимодействие с галереей
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('mainImage');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                // Убираем активный класс у всех миниатюр
+                thumbnails.forEach(t => t.classList.remove('active'));
+                // Добавляем активный класс текущей
+                this.classList.add('active');
+                
+                // Меняем основное изображение
+                const iconClass = this.querySelector('i').className;
+                mainImage.innerHTML = `<i class="${iconClass}"></i>`;
+            });
+        });
+        
+        // Управление количеством товара
+        const minusBtn = document.querySelector('.minus');
+        const plusBtn = document.querySelector('.plus');
+        const quantityInput = document.querySelector('.quantity-input');
+        
+        minusBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+        
+        plusBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value < 10) {
+                quantityInput.value = value + 1;
+            }
+        });
+        
+        // Добавление в корзину
+        const addToCartBtn = document.querySelector('.btn-primary');
+        addToCartBtn.addEventListener('click', function() {
+            const quantity = quantityInput.value;
+            const productName = document.querySelector('.product-name').textContent;
+            const price = document.querySelector('.price-current').textContent;
+            
+            // Здесь обычно отправляется запрос на сервер
+            alert(`Добавлено в корзину:\n${productName}\nКоличество: ${quantity}\nСумма: ${parseInt(price.replace(/\s/g, '')) * quantity} ₽`);
+            
+            // Обновляем счетчик корзины
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = parseInt(cartCount.textContent) + parseInt(quantity);
+        });
+    </script>
+</body>
+</html>

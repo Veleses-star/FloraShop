@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доставка и оплата | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфичные стили для страницы доставки */
+        .delivery-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .delivery-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .page-subtitle,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        /* Основной контент */
+        .delivery-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* Карточки с информацией */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .card-title i {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.8rem;
+        }
+        
+        /* Списки доставки и оплаты */
+        .delivery-list,
+        .payment-list {
+            list-style: none;
+        }
+        
+        .delivery-list li,
+        .payment-list li {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .delivery-list li:last-child,
+        .payment-list li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .list-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(15, 111, 56, 0.3), rgba(29, 140, 74, 0.2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .list-content {
+            flex: 1;
+        }
+        
+        .list-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .list-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            padding: 5px 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .list-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Карта зон доставки */
+        .zones-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 20px;
+        }
+        
+        .zones-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .zones-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+        }
+        
+        .zones-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .zones-map {
+            background: linear-gradient(135deg, rgba(123, 167, 142, 0.2), rgba(157, 186, 170, 0.1));
+            border-radius: 15px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+        }
+        
+        .zones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .zone-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .zone-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .zone-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .zone-name {
+            flex: 1;
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        .zone-time {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* FAQ секция */
+        .faq-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 20px;
+        }
+        
+        .faq-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .faq-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+        }
+        
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px 20px;
+            max-height: 500px;
+        }
+        
+        /* Важная информация */
+        .important-info {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            border-left: 4px solid #0f6f38;
+        }
+        
+        .important-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .important-list {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+        
+        .important-list li {
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .zones-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 2.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .delivery-header {
+                padding: 30px 20px;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .info-card,
+            .zones-section,
+            .faq-section,
+            .important-info {
+                padding: 25px;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .zones-map {
+                height: 250px;
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .delivery-header {
+                padding: 25px 15px;
+            }
+            
+            .info-card,
+            .zones-section,
+            .faq-section,
+            .important-info {
+                padding: 20px;
+            }
+            
+            .list-title {
+                font-size: 1.1rem;
+            }
+            
+            .faq-question {
+                font-size: 1rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (одинаковая с главной страницей) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Главная</a>
+                    <a href="catalog.html" class="menu-item"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="products.html" class="menu-item"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="delivery.html" class="menu-item active"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="contacts.html" class="menu-item"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="checkout.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                    <a href="adminPanel.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Админ Панель</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка страницы -->
+            <div class="delivery-header">
+                <h1 class="page-title">Доставка и оплата</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="delivery.html">Доставка и оплата</a>
+                </div>
+                <p class="page-subtitle">
+                    Быстрая и надежная доставка свежих цветов по Кемерово. 
+                    Выберите удобный способ получения и оплаты.
+                </p>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="delivery-content">
+                <!-- Карточки доставки и оплаты -->
+                <div class="info-cards">
+                    <!-- Условия доставки -->
+                    <div class="info-card">
+                        <h2 class="card-title"><i class="fas fa-shipping-fast"></i> Условия доставки</h2>
+                        <ul class="delivery-list">
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-gift"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Бесплатная доставка</div>
+                                    <div class="list-price">от 3 000 ₽</div>
+                                    <div class="list-description">При заказе на сумму от 3000 рублей доставка осуществляется бесплатно</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Стандартная доставка</div>
+                                    <div class="list-price">300 ₽</div>
+                                    <div class="list-description">Доставка в течение 2-4 часов в рабочее время</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Срочная доставка</div>
+                                    <div class="list-price">500 ₽</div>
+                                    <div class="list-description">Доставка в течение 1-2 часов. Доступна при наличии курьера в вашем районе</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Время работы</div>
+                                    <div class="list-description">
+                                        <strong>9:00 - 22:00</strong> ежедневно<br>
+                                        Прием заказов на доставку: до 21:00
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Способы оплаты -->
+                    <div class="info-card">
+                        <h2 class="card-title"><i class="fas fa-credit-card"></i> Способы оплаты</h2>
+                        <ul class="payment-list">
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Наличными курьеру</div>
+                                    <div class="list-description">Оплата наличными при получении заказа. Курьер имеет сдачу</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Онлайн оплата картой</div>
+                                    <div class="list-description">Безопасная оплата банковской картой Visa, Mastercard, МИР через защищенное соединение</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fab fa-apple"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Apple Pay / Google Pay</div>
+                                    <div class="list-description">Быстрая оплата через смартфон. Поддерживается на iOS и Android устройствах</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="list-content">
+                                    <div class="list-title">Для юридических лиц</div>
+                                    <div class="list-description">Оплата по безналичному расчету с выставлением счета. НДС не облагается</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Зоны доставки -->
+                <div class="zones-section">
+                    <h2 class="zones-title">Зоны доставки по Кемерово</h2>
+                    <div class="zones-container">
+                        <div class="zones-map">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="zones-list">
+                            <div class="zone-item">
+                                <div class="zone-marker" style="background: #0f6f38;"></div>
+                                <div class="zone-name">Центральный район</div>
+                                <div class="zone-time">1-2 часа</div>
+                            </div>
+                            <div class="zone-item">
+                                <div class="zone-marker" style="background: #1d8c4a;"></div>
+                                <div class="zone-name">Заводский район</div>
+                                <div class="zone-time">2-3 часа</div>
+                            </div>
+                            <div class="zone-item">
+                                <div class="zone-marker" style="background: #27a359;"></div>
+                                <div class="zone-name">Рудничный район</div>
+                                <div class="zone-time">2-3 часа</div>
+                            </div>
+                            <div class="zone-item">
+                                <div class="zone-marker" style="background: #3bc06e;"></div>
+                                <div class="zone-name">Кировский район</div>
+                                <div class="zone-time">3-4 часа</div>
+                            </div>
+                            <div class="zone-item">
+                                <div class="zone-marker" style="background: #4fd584;"></div>
+                                <div class="zone-name">Ленинский район</div>
+                                <div class="zone-time">3-4 часа</div>
+                            </div>
+                            <div class="zone-item">
+                                <div class="zone-marker" style="background: #63e99a;"></div>
+                                <div class="zone-name">Пригородные районы</div>
+                                <div class="zone-time">4-5 часов</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div class="faq-section">
+                    <h2 class="faq-title">Часто задаваемые вопросы</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Можно ли заказать доставку в ночное время?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Ночная доставка доступна только по предварительной договоренности за дополнительную плату (1000 ₽). 
+                                Минимальная сумма заказа для ночной доставки - 5000 ₽.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Что делать, если получателя нет по адресу?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Курьер будет ждать 15 минут. Если получатель не появится, мы свяжемся с вами для уточнения дальнейших действий. 
+                                Возможен повторный выезд курьера (300 ₽) или возврат заказа в магазин.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Можно ли изменить адрес доставки после оформления заказа?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Да, вы можете изменить адрес доставки до момента отправки заказа курьеру. 
+                                Позвоните нам по телефону +7 (999) 123-45-67 или напишите в онлайн-чат.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Как отследить статус доставки?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                После отправки заказа курьером, вы получите SMS с номером телефона курьера и примерным временем прибытия. 
+                                Также вы можете отслеживать статус в личном кабинете на сайте.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Можно ли сделать анонимную доставку?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Да, мы можем сделать анонимную доставку без указания отправителя. 
+                                Просто отметьте этот пункт при оформлении заказа в разделе "Особые пожелания".
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Важная информация -->
+                <div class="important-info">
+                    <h3 class="important-title"><i class="fas fa-exclamation-circle"></i> Важная информация</h3>
+                    <ul class="important-list">
+                        <li>Минимальная сумма заказа - 1000 рублей</li>
+                        <li>Время доставки указано приблизительно и может меняться в зависимости от загруженности дорог</li>
+                        <li>При срочной доставке рекомендуем уточнять возможность у оператора</li>
+                        <li>Доставка в отдаленные районы и пригород осуществляется по предварительной договоренности</li>
+                        <li>Оплата наличными возможна только в российских рублях</li>
+                        <li>Возврат денежных средств осуществляется в течение 10 рабочих дней тем же способом, которым была произведена оплата</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал (одинаковый с главной страницей) -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link messenger">
+                            <i class="fas fa-comment-dots"></i> 
+                        </a>
+                        <a href="#" class="social-link rutube">
+                            <i class="fas fa-video"></i> 
+                        </a>
+                        <a href="#" class="social-link vk">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="catalog.html"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="products.html"><i class="fas fa-chevron-right"></i> Товары</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="delivery.html"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация FAQ
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', function() {
+                    // Закрываем все другие открытые вопросы
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Открываем/закрываем текущий вопрос
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Автоматически открываем первый вопрос
+            if (faqItems.length > 0) {
+                faqItems[0].classList.add('active');
+            }
+            
+            // Анимация при наведении на зоны доставки
+            const zoneItems = document.querySelectorAll('.zone-item');
+            const zonesMap = document.querySelector('.zones-map i');
+            
+            zoneItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const markerColor = this.querySelector('.zone-marker').style.backgroundColor;
+                    zonesMap.style.color = markerColor;
+                    zonesMap.style.transition = 'color 0.3s ease';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    zonesMap.style.color = 'rgba(255, 255, 255, 0.8)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфичные стили для страницы "О нас" */
+        .about-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .page-subtitle,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        /* Основной контент */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* Блоки с информацией */
+        .about-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+        
+        .about-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+        }
+        
+        .section-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .mission-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .mission-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+        
+        .mission-icon {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .mission-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .mission-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Команда */
+        .team-section {
+            margin-top: 20px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .member-photo {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(123, 167, 142, 0.3), rgba(157, 186, 170, 0.2));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.9);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .member-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .member-position {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .member-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Преимущества */
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .advantage-item {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .advantage-item:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .advantage-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(15, 111, 56, 0.3), rgba(29, 140, 74, 0.2));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .advantage-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .advantage-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Статистика */
+        .stats-section {
+            margin-top: 40px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .mission-grid,
+            .team-grid,
+            .advantages-grid,
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 2.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .about-header {
+                padding: 30px 20px;
+            }
+            
+            .about-section {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .mission-grid,
+            .team-grid,
+            .advantages-grid,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .member-photo {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+            
+            .about-section {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .about-header {
+                padding: 25px 15px;
+            }
+            
+            .about-section {
+                padding: 20px;
+            }
+            
+            .member-photo {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (одинаковая с главной страницей) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Главная</a>
+                    <a href="catalog.html" class="menu-item"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="products.html" class="menu-item"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="about.html" class="menu-item active"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="delivery.html" class="menu-item"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="contacts.html" class="menu-item"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="checkout.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                    <a href="adminPanel.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Админ Панель</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка страницы -->
+            <div class="about-header">
+                <h1 class="page-title">О нашем магазине</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="about.html">О нас</a>
+                </div>
+                <p class="page-subtitle">
+                    Мы создаем красоту, которая вдохновляет и дарит радость с 2010 года. 
+                    Каждый цветок — это история, а каждый букет — эмоция.
+                </p>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="about-content">
+                <!-- История компании -->
+                <div class="about-section">
+                    <h2 class="section-title">Наша история</h2>
+                    <div class="section-content">
+                        <p>В 2010 году, в небольшой цветочной лавке в центре Кемерово, началась наша история. 
+                        Основатель магазина, Анна Петрова, с детства обожала цветы. Она верила, что букет — 
+                        это не просто набор цветов, а настоящее послание, способное передать самые сокровенные чувства.</p>
+                        
+                        <p>Сначала это была маленькая мастерская, где Анна создавала букеты для друзей и знакомых. 
+                        С каждым новым заказом росла не только ее популярность, но и понимание: людям нужны не 
+                        просто цветы, а эмоции, воспоминания, моменты счастья.</p>
+                        
+                        <p>Сегодня FloraShop — это команда из 15 профессиональных флористов, современная цветочная 
+                        мастерская и служба доставки, которая работает по всему городу. Но наша философия осталась 
+                        неизменной: каждый цветок должен быть совершенным, каждый букет — уникальным.</p>
+                    </div>
+                </div>
+
+                <!-- Миссия и ценности -->
+                <div class="about-section">
+                    <h2 class="section-title">Наша миссия и ценности</h2>
+                    <div class="section-content">
+                        <p>Мы стремимся делать мир красивее, доставляя радость и эмоции через наши цветочные композиции. 
+                        Наши ценности — это то, что делает нас особенными:</p>
+                    </div>
+                    
+                    <div class="mission-grid">
+                        <div class="mission-item">
+                            <div class="mission-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 class="mission-title">Любовь к делу</h3>
+                            <p class="mission-text">Мы работаем с душой. Каждый букет создается с любовью и вниманием к деталям.</p>
+                        </div>
+                        
+                        <div class="mission-item">
+                            <div class="mission-icon">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <h3 class="mission-title">Экологичность</h3>
+                            <p class="mission-text">Используем только свежие цветы от проверенных поставщиков, ответственно относящихся к природе.</p>
+                        </div>
+                        
+                        <div class="mission-item">
+                            <div class="mission-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h3 class="mission-title">Надежность</h3>
+                            <p class="mission-text">Всегда выполняем обещания. Доставка вовремя, цветы свежие, клиенты довольны.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Наша команда -->
+                <div class="about-section">
+                    <h2 class="section-title">Наша команда</h2>
+                    <div class="section-content">
+                        <p>Наши флористы — настоящие художники, которые превращают цветы в произведения искусства. 
+                        Каждый из них проходит строгий отбор и постоянно обучается новым техникам.</p>
+                    </div>
+                    
+                    <div class="team-section">
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <div class="member-photo">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h3 class="member-name">Анна Петрова</h3>
+                                <div class="member-position">Основатель, главный флорист</div>
+                                <p class="member-description">Создает букеты уже 15 лет. Специализируется на свадебных и праздничных композициях.</p>
+                            </div>
+                            
+                            <div class="team-member">
+                                <div class="member-photo">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h3 class="member-name">Мария Смирнова</h3>
+                                <div class="member-position">Ведущий флорист</div>
+                                <p class="member-description">Эксперт по европейским техникам флористики. Любит экспериментировать с формами.</p>
+                            </div>
+                            
+                            <div class="team-member">
+                                <div class="member-photo">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h3 class="member-name">Дмитрий Иванов</h3>
+                                <div class="member-position">Флорист-декоратор</div>
+                                <p class="member-description">Создает уникальные декоры для мероприятий и фотосессий.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Наши преимущества -->
+                <div class="about-section">
+                    <h2 class="section-title">Почему выбирают нас</h2>
+                    
+                    <div class="advantages-grid">
+                        <div class="advantage-item">
+                            <div class="advantage-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3 class="advantage-title">10 лет опыта</h3>
+                            <p class="advantage-text">Более десяти лет мы создаем красоту и дарим радость нашим клиентам</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <div class="advantage-icon">
+                                <i class="fas fa-flower"></i>
+                            </div>
+                            <h3 class="advantage-title">Свежие цветы</h3>
+                            <p class="advantage-text">Работаем только с проверенными поставщиками. Цветы срезаны в день доставки</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <div class="advantage-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <h3 class="advantage-title">Быстрая доставка</h3>
+                            <p class="advantage-text">Доставляем заказы за 2-4 часа. Работаем 7 дней в неделю</p>
+                        </div>
+                        
+                        <div class="advantage-item">
+                            <div class="advantage-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <h3 class="advantage-title">Гарантия качества</h3>
+                            <p class="advantage-text">Если цветы вам не понравились — мы заменим их или вернем деньги</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="about-section">
+                    <h2 class="section-title">FloraShop в цифрах</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-text">лет работы</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-number">5000+</div>
+                            <div class="stat-text">довольных клиентов</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-number">150+</div>
+                            <div class="stat-text">видов цветов</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-text">поддержка клиентов</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Философия -->
+                <div class="about-section">
+                    <h2 class="section-title">Наша философия</h2>
+                    <div class="section-content">
+                        <p>Мы верим, что цветы — это не просто растения. Это эмоции, которые можно подарить. 
+                        Это способ сказать "я тебя люблю", "я скучаю", "я рад за тебя", когда слов недостаточно.</p>
+                        
+                        <p>Каждый день мы работаем над тем, чтобы сделать мир немного красивее и добрее. 
+                        Мы не просто продаем цветы — мы создаем моменты счастья, которые остаются в памяти навсегда.</p>
+                        
+                        <p style="font-style: italic; text-align: center; margin-top: 25px; color: rgba(255, 255, 255, 0.95);">
+                            "Цветы — это остатки рая на земле. И мы помогаем вам прикоснуться к этому раю"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал (одинаковый с главной страницей) -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link messenger">
+                            <i class="fas fa-comment-dots"></i> 
+                        </a>
+                        <a href="#" class="social-link rutube">
+                            <i class="fas fa-video"></i> 
+                        </a>
+                        <a href="#" class="social-link vk">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="catalog.html"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="products.html"><i class="fas fa-chevron-right"></i> Товары</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="delivery.html"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация счетчиков статистики
+        document.addEventListener('DOMContentLoaded', function() {
+            const stats = document.querySelectorAll('.stat-number');
+            const statsSection = document.querySelector('.stats-grid');
+            
+            function animateCounter(element, target) {
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        element.textContent = target + (element.textContent.includes('+') ? '+' : '');
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(current) + (element.textContent.includes('+') ? '+' : '');
+                    }
+                }, 20);
+            }
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        stats.forEach(stat => {
+                            const target = parseInt(stat.textContent);
+                            if (!isNaN(target)) {
+                                animateCounter(stat, target);
+                            }
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+            
+            // Анимация при наведении на преимущества
+            const advantageItems = document.querySelectorAll('.advantage-item');
+            advantageItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.advantage-icon i');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.1)';
+                        icon.style.transition = 'transform 0.3s ease';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.advantage-icon i');
+                    if (icon) {
+                        icon.style.transform = 'scale(1)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфичные стили для страницы контактов */
+        .contacts-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contacts-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .page-subtitle,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        /* Основной контент */
+        .contacts-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* Двухколоночная сетка */
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        /* Контактная информация */
+        .contact-info-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .contact-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .contact-title i {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.8rem;
+        }
+        
+        .contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-item:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(15, 111, 56, 0.3), rgba(29, 140, 74, 0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #fff;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .contact-details {
+            flex: 1;
+        }
+        
+        .contact-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .contact-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+        
+        .contact-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .contact-link {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+        
+        .contact-link:hover {
+            color: #0f6f38;
+            text-decoration: underline;
+        }
+        
+        .social-contact {
+            margin-top: 30px;
+        }
+        
+        .social-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .social-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px 18px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .social-button.whatsapp:hover {
+            background: #25D366;
+            color: white;
+        }
+        
+        .social-button.telegram:hover {
+            background: #0088cc;
+            color: white;
+        }
+        
+        .social-button.vk:hover {
+            background: #4C75A3;
+            color: white;
+        }
+        
+        /* Форма обратной связи */
+        .contact-form-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .form-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .form-title i {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .submit-button:hover {
+            background: linear-gradient(135deg, #1d8c4a, #27a359);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 111, 56, 0.4);
+        }
+        
+        .submit-button:active {
+            transform: translateY(0);
+        }
+        
+        .form-note {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        
+        /* Карта */
+        .map-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 20px;
+        }
+        
+        .map-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .map-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+        }
+        
+        .map-container {
+            background: linear-gradient(135deg, rgba(123, 167, 142, 0.2), rgba(157, 186, 170, 0.1));
+            border-radius: 15px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(15, 111, 56, 0.1), rgba(29, 140, 74, 0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .map-address {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            max-width: 80%;
+        }
+        
+        /* Дополнительная информация */
+        .additional-info {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .info-icon {
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+        
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .info-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .additional-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 2.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .contacts-header {
+                padding: 30px 20px;
+            }
+            
+            .contacts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .contact-info-card,
+            .contact-form-card,
+            .map-section,
+            .additional-info {
+                padding: 25px;
+            }
+            
+            .contact-title,
+            .form-title {
+                font-size: 1.4rem;
+            }
+            
+            .additional-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                height: 300px;
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .contacts-header {
+                padding: 25px 15px;
+            }
+            
+            .contact-info-card,
+            .contact-form-card,
+            .map-section,
+            .additional-info {
+                padding: 20px;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .social-buttons {
+                justify-content: center;
+            }
+            
+            .map-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (одинаковая с главной страницей) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Главная</a>
+                    <a href="catalog.html" class="menu-item"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="products.html" class="menu-item"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="delivery.html" class="menu-item"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="contacts.html" class="menu-item active"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="checkout.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                    <a href="adminPanel.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Админ Панель</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка страницы -->
+            <div class="contacts-header">
+                <h1 class="page-title">Контакты</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+                <p class="page-subtitle">
+                    Свяжитесь с нами любым удобным способом. Мы всегда рады помочь и ответить на ваши вопросы.
+                </p>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="contacts-content">
+                <!-- Двухколоночная сетка -->
+                <div class="contacts-grid">
+                    <!-- Контактная информация -->
+                    <div class="contact-info-card">
+                        <h2 class="contact-title"><i class="fas fa-address-book"></i> Контактная информация</h2>
+                        <ul class="contact-list">
+                            <li class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Адрес</div>
+                                    <div class="contact-value">г. Кемерово, ул. Ворошилова 24б, к. 323</div>
+                                    <div class="contact-description">Центральный район, рядом с ТЦ "Вернисаж"</div>
+                                </div>
+                            </li>
+                            <li class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Телефон</div>
+                                    <a href="tel:+79991234567" class="contact-value contact-link">+7 (999) 123-45-67</a>
+                                    <div class="contact-description">Основной номер для заказов и консультаций</div>
+                                </div>
+                            </li>
+                            <li class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Email</div>
+                                    <a href="mailto:info@florashop.ru" class="contact-value contact-link">info@florashop.ru</a>
+                                    <div class="contact-description">Для деловой переписки и коммерческих предложений</div>
+                                </div>
+                            </li>
+                            <li class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-label">График работы</div>
+                                    <div class="contact-value">Пн-Вс: 9:00-21:00</div>
+                                    <div class="contact-description">Без перерывов и выходных. Прием заказов онлайн - круглосуточно</div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Социальные сети -->
+                        <div class="social-contact">
+                            <div class="social-title">Мы в соцсетях:</div>
+                            <div class="social-buttons">
+                                <a href="https://t.me/florashop" class="social-button telegram" target="_blank">
+                                    <i class="fab fa-telegram"></i> Telegram
+                                </a>
+                                <a href="https://vk.com/florashop" class="social-button vk" target="_blank">
+                                    <i class="fab fa-vk"></i> ВКонтакте
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Форма обратной связи -->
+                    <div class="contact-form-card">
+                        <h2 class="form-title"><i class="fas fa-comment-dots"></i> Форма обратной связи</h2>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Ваше имя *</label>
+                                <input type="text" id="name" class="form-input" placeholder="Иван Иванов" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" id="email" class="form-input" placeholder="example@mail.ru" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Телефон</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="+7 (999) 123-45-67">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message" class="form-label">Сообщение *</label>
+                                <textarea id="message" class="form-input" placeholder="Расскажите, чем мы можем вам помочь..." rows="5" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-button">
+                                <i class="fas fa-paper-plane"></i> Отправить сообщение
+                            </button>
+                            
+                            <p class="form-note">
+                                * Обязательные поля для заполнения.<br>
+                                Мы свяжемся с вами в течение 2 часов в рабочее время.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Карта проезда -->
+                <div class="map-section">
+                    <h2 class="map-title">Как нас найти</h2>
+                    <div class="map-container">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <div class="map-overlay">
+                            <div class="map-address">
+                                г. Кемерово, ул. Ворошилова 24б, к. 323<br>
+                                Парковка: бесплатная, 20 мест
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Дополнительная информация -->
+                <div class="additional-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="info-title">Поддержка клиентов</h3>
+                        <p class="info-text">Наши операторы готовы помочь вам с 9:00 до 21:00 без выходных</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <h3 class="info-title">Заказ по телефону</h3>
+                        <p class="info-text">Можете оформить заказ по телефону, если неудобно делать это онлайн</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3 class="info-title">Самовывоз</h3>
+                        <p class="info-text">Вы можете забрать заказ самостоятельно по адресу магазина</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал (одинаковый с главной страницей) -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link messenger">
+                            <i class="fas fa-comment-dots"></i> 
+                        </a>
+                        <a href="#" class="social-link rutube">
+                            <i class="fas fa-video"></i> 
+                        </a>
+                        <a href="#" class="social-link vk">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="catalog.html"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="products.html"><i class="fas fa-chevron-right"></i> Товары</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="delivery.html"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Валидация и отправка формы
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            
+            // Маска для телефона
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        if (!value.startsWith('7') && !value.startsWith('8')) {
+                            value = '7' + value;
+                        }
+                        
+                        let formatted = '+7 (';
+                        if (value.length > 1) formatted += value.substring(1, 4);
+                        if (value.length >= 4) formatted += ') ' + value.substring(4, 7);
+                        if (value.length >= 7) formatted += '-' + value.substring(7, 9);
+                        if (value.length >= 9) formatted += '-' + value.substring(9, 11);
+                        
+                        e.target.value = formatted.substring(0, 18);
+                    }
+                });
+            }
+            
+            // Обработка отправки формы
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Собираем данные формы
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    message: document.getElementById('message').value,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Валидация
+                if (!formData.name || !formData.email || !formData.message) {
+                    alert('Пожалуйста, заполните все обязательные поля (отмечены *)');
+                    return;
+                }
+                
+                // В реальном проекте здесь будет отправка на сервер
+                console.log('Отправка формы:', formData);
+                
+                // Показываем сообщение об успехе
+                const submitButton = contactForm.querySelector('.submit-button');
+                const originalText = submitButton.innerHTML;
+                
+                submitButton.innerHTML = '<i class="fas fa-check"></i> Сообщение отправлено!';
+                submitButton.style.background = 'linear-gradient(135deg, #1d8c4a, #27a359)';
+                submitButton.disabled = true;
+                
+                // Очищаем форму
+                setTimeout(() => {
+                    contactForm.reset();
+                    submitButton.innerHTML = originalText;
+                    submitButton.style.background = 'linear-gradient(135deg, #0f6f38, #1d8c4a)';
+                    submitButton.disabled = false;
+                    
+                    // Показываем дополнительное сообщение
+                    alert('Спасибо за ваше сообщение! Мы свяжемся с вами в течение 2 часов.');
+                }, 2000);
+            });
+            
+            // Анимация иконок при наведении
+            const contactIcons = document.querySelectorAll('.contact-icon');
+            contactIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1) rotate(5deg)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+            
+            // Интерактивная карта
+            const mapContainer = document.querySelector('.map-container');
+            const mapIcon = mapContainer.querySelector('i');
+            
+            mapContainer.addEventListener('mouseenter', function() {
+                mapIcon.style.transform = 'scale(1.2)';
+                mapIcon.style.transition = 'transform 0.5s ease';
+            });
+            
+            mapContainer.addEventListener('mouseleave', function() {
+                mapIcon.style.transform = 'scale(1)';
+            });
+            
+            // Клик по карте (в реальном проекте откроет карты)
+            mapContainer.addEventListener('click', function() {
+                const address = encodeURIComponent('г. Кемерово, ул. Ворошилова 24б, к. 323');
+                const mapsUrl = `https://yandex.ru/maps/?text=${address}`;
+                
+                if (confirm('Открыть местоположение в Яндекс.Картах?')) {
+                    window.open(mapsUrl, '_blank');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

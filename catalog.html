@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог цветов | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         /* Специфичные стили для страницы каталога */
+        .catalog-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catalog-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .page-description,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        .catalog-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Стили для блока фильтров */
+        .filters-sidebar {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 160px;
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .filter-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-title i {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .price-filter {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .price-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .price-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .price-input-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+        
+        .price-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .price-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        .price-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .price-range-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+        }
+        
+        .range-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+        
+        .range-text span {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        /* Остальные стили фильтров */
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .filter-checkbox input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: #0f6f38;
+        }
+        
+        .filter-checkbox span {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+        
+        .color-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .color-option.active {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-apply {
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            color: white;
+        }
+        
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-apply:hover {
+            background: linear-gradient(135deg, #1d8c4a, #27a359);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 111, 56, 0.4);
+        }
+        
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Стили для сетки товаров */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .product-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(123, 167, 142, 0.3), rgba(157, 186, 170, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-category {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .product-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .add-to-cart {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-to-cart:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.2));
+            transform: translateY(-2px);
+        }
+        
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+        
+        .pagination-btn {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .pagination-dots {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .catalog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-sidebar {
+                position: static;
+            }
+            
+            .filter-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .catalog-header {
+                padding: 20px;
+            }
+            
+            .filters-sidebar {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-bottom {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .add-to-cart {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .pagination-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+            
+            .price-input {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (одинаковая с главной страницей) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Главная</a>
+                    <a href="catalog.html" class="menu-item active"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="products.html" class="menu-item"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="delivery.html" class="menu-item"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="contacts.html" class="menu-item"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="checkout.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                    <a href="adminPanel.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Админ Панель</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка каталога -->
+            <div class="catalog-header">
+                <h1 class="page-title">Каталог цветов</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="catalog.html">Каталог</a>
+                </div>
+                <p class="page-description" style="color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 0 auto;">
+                    Выберите из нашего широкого ассортимента свежих цветов и букетов. 
+                    Более 150 видов цветов на любой вкус и случай.
+                </p>
+            </div>
+
+            <!-- Основной контент каталога -->
+            <div class="catalog-container">
+                <!-- Боковая панель с фильтрами -->
+                <aside class="filters-sidebar">
+                    <div class="filter-section">
+                        <h3 class="filter-title"><i class="fas fa-filter"></i> Фильтры</h3>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Категории:</label>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="category1" checked>
+                                <span>Букеты</span>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="category2">
+                                <span>Горшечные растения</span>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="category3" checked>
+                                <span>Свадебные</span>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="category4">
+                                <span>Подарочные наборы</span>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Цена, ₽:</label>
+                            <div class="price-filter">
+                                <div class="price-inputs">
+                                    <div class="price-input-wrapper">
+                                        <div class="price-input-label">От</div>
+                                        <input type="number" class="price-input" placeholder="500" value="500" min="0" max="10000">
+                                    </div>
+                                    <div class="price-input-wrapper">
+                                        <div class="price-input-label">До</div>
+                                        <input type="number" class="price-input" placeholder="5000" value="5000" min="500" max="20000">
+                                    </div>
+                                </div>
+                                
+                                <div class="price-slider-container">
+                                    <input type="range" class="price-slider" min="0" max="10000" value="5000" step="100">
+                                    <div class="price-values">
+                                        <span>0 ₽</span>
+                                        <span>5000 ₽</span>
+                                        <span>10 000 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Цвет:</label>
+                            <div class="color-options">
+                                <div class="color-option active" style="background: #ff6b6b;" title="Красный"></div>
+                                <div class="color-option" style="background: #ffd166;" title="Желтый"></div>
+                                <div class="color-option" style="background: #06d6a0;" title="Зеленый"></div>
+                                <div class="color-option" style="background: #118ab2;" title="Синий"></div>
+                                <div class="color-option" style="background: #ef476f;" title="Розовый"></div>
+                                <div class="color-option" style="background: #8338ec;" title="Фиолетовый"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Повод:</label>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="occasion1">
+                                <span>День рождения</span>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="occasion2" checked>
+                                <span>Свадьба</span>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="occasion3">
+                                <span>8 Марта</span>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="occasion4">
+                                <span>14 Февраля</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn btn-apply">Применить</button>
+                        <button class="filter-btn btn-reset">Сбросить</button>
+                    </div>
+                </aside>
+
+                <!-- Сетка товаров -->
+                <main>
+                    <div class="products-grid">
+                        <!-- Товар 1 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="fas fa-rose"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">Букеты</div>
+                                <h3 class="product-name">Розовая нежность</h3>
+                                <p class="product-description">Нежный букет из 25 роз с зеленью. Идеально подходит для романтических свиданий.</p>
+                                <div class="product-bottom">
+                                    <div class="product-price">2 500 ₽</div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Товар 2 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">Горшечные</div>
+                                <h3 class="product-name">Орхидея Фаленопсис</h3>
+                                <p class="product-description">Элегантная белая орхидея в керамическом горшке. Украсит любой интерьер.</p>
+                                <div class="product-bottom">
+                                    <div class="product-price">3 200 ₽</div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Товар 3 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">Свадебные</div>
+                                <h3 class="product-name">Свадебный букет</h3>
+                                <p class="product-description">Изящный букет невесты из белых роз и лилий. Создан для особого дня.</p>
+                                <div class="product-bottom">
+                                    <div class="product-price">4 500 ₽</div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Товар 4 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">Букеты</div>
+                                <h3 class="product-name">Весеннее настроение</h3>
+                                <p class="product-description">Яркий букет из тюльпанов, нарциссов и гиацинтов. Подарите весну близким.</p>
+                                <div class="product-bottom">
+                                    <div class="product-price">1 800 ₽</div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Товар 5 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="fas fa-tree"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">Горшечные</div>
+                                <h3 class="product-name">Фикус Бенджамина</h3>
+                                <p class="product-description">Красивое комнатное дерево. Очищает воздух и создает уют.</p>
+                                <div class="product-bottom">
+                                    <div class="product-price">2 100 ₽</div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Товар 6 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">Подарки</div>
+                                <h3 class="product-name">Подарочный набор</h3>
+                                <p class="product-description">Букет + конфеты + открытка. Идеальный подарок на любой праздник.</p>
+                                <div class="product-bottom">
+                                    <div class="product-price">3 800 ₽</div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Пагинация -->
+                    <div class="pagination">
+                        <a href="#" class="pagination-btn"><i class="fas fa-chevron-left"></i></a>
+                        <a href="#" class="pagination-btn active">1</a>
+                        <a href="#" class="pagination-btn">2</a>
+                        <a href="#" class="pagination-btn">3</a>
+                        <span class="pagination-dots">...</span>
+                        <a href="#" class="pagination-btn">8</a>
+                        <a href="#" class="pagination-btn"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Подвал (одинаковый с главной страницей) -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link messenger">
+                            <i class="fas fa-comment-dots"></i> 
+                        </a>
+                        <a href="#" class="social-link rutube">
+                            <i class="fas fa-video"></i> 
+                        </a>
+                        <a href="#" class="social-link vk">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="catalog.html"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="delivery.html"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+<script>
+    // Обновление текстового отображения цен при изменении полей ввода
+    const minPriceInput = document.querySelector('input[placeholder="500"]');
+    const maxPriceInput = document.querySelector('input[placeholder="5000"]');
+    const minPriceSpan = document.getElementById('min-price');
+    const maxPriceSpan = document.getElementById('max-price');
+    
+    if (minPriceInput && maxPriceInput && minPriceSpan && maxPriceSpan) {
+        minPriceInput.addEventListener('input', function() {
+            minPriceSpan.textContent = this.value;
+        });
+        
+        maxPriceInput.addEventListener('input', function() {
+            maxPriceSpan.textContent = this.value;
+        });
+    }
+</script>
+</html>

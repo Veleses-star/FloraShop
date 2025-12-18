@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа | FloraShop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфичные стили для страницы оформления заказа */
+        .checkout-header {
+            background: url("images/hero.jpg") center/cover no-repeat;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            backdrop-filter: blur(2px);
+        }
+
+        .page-title,
+        .page-subtitle,
+        .breadcrumbs {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .breadcrumbs {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #fff;
+        }
+        
+        .breadcrumbs span {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 10px;
+        }
+        
+        /* Основной контент */
+        .checkout-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* Двухколоночная сетка */
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        /* Общие стили для блоков */
+        .checkout-block {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .block-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .block-title i {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.8rem;
+        }
+        
+        /* Формы */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .form-label .required {
+            color: #ff4757;
+            margin-left: 3px;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-input.error {
+            border-color: #ff4757;
+            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+        }
+        
+        .error-message {
+            color: #ff4757;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Варианты доставки */
+        .delivery-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .delivery-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .delivery-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .delivery-option.selected {
+            background: rgba(15, 111, 56, 0.2);
+            border-color: rgba(15, 111, 56, 0.4);
+            box-shadow: 0 0 0 2px rgba(15, 111, 56, 0.1);
+        }
+        
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .option-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .option-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .option-check {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .delivery-option.selected .option-check {
+            background: #0f6f38;
+            border-color: #0f6f38;
+        }
+        
+        .option-check i {
+            color: white;
+            font-size: 0.8rem;
+            display: none;
+        }
+        
+        .delivery-option.selected .option-check i {
+            display: block;
+        }
+        
+        /* Дата и время */
+        .datetime-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .datetime-input {
+            position: relative;
+        }
+        
+        .datetime-input i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+        
+        /* Способы оплаты */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .payment-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .payment-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .payment-option.selected {
+            background: rgba(15, 111, 56, 0.2);
+            border-color: rgba(15, 111, 56, 0.4);
+            box-shadow: 0 0 0 2px rgba(15, 111, 56, 0.1);
+        }
+        
+        .payment-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            flex-shrink: 0;
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .payment-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Итоговый блок */
+        .order-summary {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 20px;
+        }
+        
+        .summary-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .summary-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+        }
+        
+        .summary-items {
+            margin-bottom: 25px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+        
+        .item-value {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .summary-total {
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .summary-total .item-label {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .summary-total .item-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        
+        /* Кнопка подтверждения */
+        .confirm-order {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .confirm-btn {
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            border: none;
+            border-radius: 15px;
+            padding: 20px 50px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(15, 111, 56, 0.3);
+        }
+        
+        .confirm-btn:hover {
+            background: linear-gradient(135deg, #1d8c4a, #27a359);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(15, 111, 56, 0.4);
+        }
+        
+        .confirm-btn:active {
+            transform: translateY(0);
+        }
+        
+        .confirm-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .confirm-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .agreement {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        
+        .agreement a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+        }
+        
+        /* Прогресс оформления */
+        .checkout-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step.completed .step-circle {
+            background: #0f6f38;
+            border-color: #0f6f38;
+            color: white;
+        }
+        
+        .step.completed .step-circle i {
+            font-size: 1.2rem;
+        }
+        
+        .step-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .step.active .step-text {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .datetime-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 2.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .checkout-header {
+                padding: 30px 20px;
+            }
+            
+            .checkout-block,
+            .order-summary {
+                padding: 30px;
+            }
+            
+            .checkout-steps {
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+            
+            .step {
+                flex: none;
+                width: calc(50% - 20px);
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .block-title {
+                font-size: 1.4rem;
+            }
+            
+            .summary-title {
+                font-size: 1.6rem;
+            }
+            
+            .confirm-btn {
+                padding: 18px 40px;
+                font-size: 1.2rem;
+            }
+            
+            .checkout-block,
+            .order-summary {
+                padding: 25px;
+            }
+            
+            .step-circle {
+                width: 45px;
+                height: 45px;
+                font-size: 0.9rem;
+            }
+            
+            .payment-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .checkout-header {
+                padding: 25px 15px;
+            }
+            
+            .checkout-block,
+            .order-summary {
+                padding: 20px;
+            }
+            
+            .block-title {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .confirm-btn {
+                width: 100%;
+                padding: 16px;
+                font-size: 1.1rem;
+                justify-content: center;
+            }
+            
+            .step {
+                width: 100%;
+            }
+            
+            .option-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .option-price {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка (одинаковая с главной страницей) -->
+    <div class="header-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">FloraShop</span>
+                </div>
+                <div class="auth-links">
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Авторизация</a>
+                    <span class="separator">/</span>
+                    <a href="auth.html" class="auth-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+                </div>
+            </div>
+            
+            <div class="header-bottom">
+                <nav class="main-menu">
+                    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Главная</a>
+                    <a href="catalog.html" class="menu-item"><i class="fas fa-th-large"></i> Каталог</a>
+                    <a href="products.html" class="menu-item"><i class="fas fa-gift"></i> Товары</a>
+                    <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> О нас</a>
+                    <a href="delivery.html" class="menu-item"><i class="fas fa-truck"></i> Доставка</a>
+                    <a href="contacts.html" class="menu-item"><i class="fas fa-address-book"></i> Контакты</a>
+                    <a href="checkout.html" class="menu-item active"><i class="fas fa-shopping-bag"></i> Оформление</a>
+                    <a href="adminPanel.html" class="menu-item"><i class="fas fa-shopping-bag"></i> Админ Панель</a>
+                </nav>
+                
+                <div class="cart-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">2</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Основное полотно -->
+        <div class="page-content">
+            <!-- Шапка страницы -->
+            <div class="checkout-header">
+                <h1 class="page-title">Оформление заказа</h1>
+                <div class="breadcrumbs">
+                    <a href="index.html">Главная</a>
+                    <span>→</span>
+                    <a href="cart.html">Корзина</a>
+                    <span>→</span>
+                    <a href="checkout.html">Оформление заказа</a>
+                </div>
+                <p class="page-subtitle">
+                    Заполните данные для доставки и выберите удобный способ оплаты.
+                </p>
+            </div>
+
+            <!-- Прогресс оформления -->
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-text">Корзина</div>
+                </div>
+                <div class="step active">
+                    <div class="step-circle">2</div>
+                    <div class="step-text">Оформление</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-text">Подтверждение</div>
+                </div>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="checkout-content">
+                <div class="checkout-grid">
+                    <!-- Данные покупателя -->
+                    <div class="checkout-block">
+                        <h2 class="block-title"><i class="fas fa-user"></i> Данные покупателя</h2>
+                        <form id="customerForm">
+                            <div class="form-group">
+                                <label for="fullName" class="form-label">
+                                    ФИО <span class="required">*</span>
+                                </label>
+                                <input type="text" id="fullName" class="form-input" placeholder="Иванов Иван Иванович" required>
+                                <div class="error-message" id="nameError">Пожалуйста, введите ваше ФИО</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">
+                                    Телефон <span class="required">*</span>
+                                </label>
+                                <input type="tel" id="phone" class="form-input" placeholder="+7 (999) 123-45-67" required>
+                                <div class="error-message" id="phoneError">Введите корректный номер телефона</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">
+                                    Email <span class="required">*</span>
+                                </label>
+                                <input type="email" id="email" class="form-input" placeholder="example@mail.ru" required>
+                                <div class="error-message" id="emailError">Введите корректный email</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address" class="form-label">
+                                    Адрес доставки <span class="required">*</span>
+                                </label>
+                                <textarea id="address" class="form-input" placeholder="ул. Цветочная, 15, кв. 10" rows="3" required></textarea>
+                                <div class="error-message" id="addressError">Введите адрес доставки</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="comment" class="form-label">Комментарий к заказу</label>
+                                <textarea id="comment" class="form-input" placeholder="Дополнительные пожелания, указания для курьера..." rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Способы доставки -->
+                    <div class="checkout-block">
+                        <h2 class="block-title"><i class="fas fa-truck"></i> Способы доставки</h2>
+                        <div class="delivery-options">
+                            <div class="delivery-option selected" data-type="courier" data-price="300">
+                                <div class="option-header">
+                                    <div class="option-title">
+                                        <i class="fas fa-motorcycle"></i>
+                                        Курьером
+                                    </div>
+                                    <div class="option-price">300 ₽</div>
+                                </div>
+                                <div class="option-description">
+                                    Доставка курьером в течение 2-4 часов. Работаем с 9:00 до 22:00.
+                                </div>
+                                <div class="option-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="delivery-option" data-type="pickup" data-price="0">
+                                <div class="option-header">
+                                    <div class="option-title">
+                                        <i class="fas fa-store"></i>
+                                        Самовывоз
+                                    </div>
+                                    <div class="option-price">Бесплатно</div>
+                                </div>
+                                <div class="option-description">
+                                    Заберите заказ самостоятельно по адресу: г. Кемерово, ул. Ворошилова 24б
+                                </div>
+                                <div class="option-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="delivery-option" data-type="express" data-price="500">
+                                <div class="option-header">
+                                    <div class="option-title">
+                                        <i class="fas fa-bolt"></i>
+                                        Срочная доставка
+                                    </div>
+                                    <div class="option-price">500 ₽</div>
+                                </div>
+                                <div class="option-description">
+                                    Доставка в течение 1-2 часов. Доступна при наличии курьера в вашем районе.
+                                </div>
+                                <div class="option-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Дата и время -->
+                        <div class="datetime-group">
+                            <div class="form-group datetime-input">
+                                <label for="deliveryDate" class="form-label">Дата доставки <span class="required">*</span></label>
+                                <input type="date" id="deliveryDate" class="form-input" required>
+                                <i class="fas fa-calendar-alt"></i>
+                                <div class="error-message" id="dateError">Выберите дату доставки</div>
+                            </div>
+                            
+                            <div class="form-group datetime-input">
+                                <label for="deliveryTime" class="form-label">Время доставки <span class="required">*</span></label>
+                                <select id="deliveryTime" class="form-input" required>
+                                    <option value="">Выберите время</option>
+                                    <option value="09:00-12:00">09:00 - 12:00</option>
+                                    <option value="12:00-15:00">12:00 - 15:00</option>
+                                    <option value="15:00-18:00">15:00 - 18:00</option>
+                                    <option value="18:00-21:00">18:00 - 21:00</option>
+                                </select>
+                                <i class="fas fa-clock"></i>
+                                <div class="error-message" id="timeError">Выберите время доставки</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Способы оплаты -->
+                <div class="checkout-block">
+                    <h2 class="block-title"><i class="fas fa-credit-card"></i> Способы оплаты</h2>
+                    <div class="payment-options">
+                        <div class="payment-option selected" data-type="cash">
+                            <div class="payment-content">
+                                <div class="payment-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Наличными курьеру</div>
+                                    <div class="payment-description">Оплата наличными при получении заказа. Курьер имеет сдачу.</div>
+                                </div>
+                                <div class="option-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-option" data-type="card">
+                            <div class="payment-content">
+                                <div class="payment-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Банковской картой онлайн</div>
+                                    <div class="payment-description">Безопасная оплата картой Visa, Mastercard или МИР.</div>
+                                </div>
+                                <div class="option-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-option" data-type="online">
+                            <div class="payment-content">
+                                <div class="payment-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Онлайн-платеж</div>
+                                    <div class="payment-description">Оплата через Apple Pay, Google Pay или СБП.</div>
+                                </div>
+                                <div class="option-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Итоговый блок -->
+                <div class="order-summary">
+                    <h2 class="summary-title">Итоги заказа</h2>
+                    <div class="summary-items">
+                        <div class="summary-item">
+                            <span class="item-label">Товары (2 шт.)</span>
+                            <span class="item-value" id="summarySubtotal">5 700 ₽</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Доставка</span>
+                            <span class="item-value" id="summaryDelivery">300 ₽</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Промокод</span>
+                            <span class="item-value" id="summaryPromo">- 0 ₽</span>
+                        </div>
+                        <div class="summary-item summary-total">
+                            <span class="item-label">Итого к оплате</span>
+                            <span class="item-value" id="summaryTotal">6 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка подтверждения -->
+                <div class="confirm-order">
+                    <button class="confirm-btn" id="confirmOrderBtn" onclick="confirmOrder()">
+                        <i class="fas fa-lock"></i> Подтвердить заказ
+                    </button>
+                    <p class="agreement">
+                        Нажимая кнопку "Подтвердить заказ", вы соглашаетесь с 
+                        <a href="#">условиями обработки персональных данных</a> и 
+                        <a href="#">публичной офертой</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал (одинаковая с главной страницей) -->
+        <footer class="footer">
+            <div class="footer-container">
+                <!-- О компании -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span class="logo-text">FloraShop</span>
+                    </div>
+                    <p class="footer-description">
+                        Создаем уникальные цветочные композиции с 2010 года. 
+                        Доставляем красоту и эмоции по всему городу.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link messenger">
+                            <i class="fas fa-comment-dots"></i> 
+                        </a>
+                        <a href="#" class="social-link rutube">
+                            <i class="fas fa-video"></i> 
+                        </a>
+                        <a href="#" class="social-link vk">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Меню -->
+                <div class="footer-section">
+                    <h3>Меню</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="catalog.html"><i class="fas fa-chevron-right"></i> Каталог</a></li>
+                        <li><a href="products.html"><i class="fas fa-chevron-right"></i> Товары</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> О нас</a></li>
+                        <li><a href="delivery.html"><i class="fas fa-chevron-right"></i> Доставка</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>г. Кемерово, ул. Ворошилова 24б, к. 323</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@florashop.ru">info@florashop.ru</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Документы -->
+                <div class="footer-section">
+                    <h3>Информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Политика конфиденциальности</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Публичная оферта</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Условия доставки</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат и обмен</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Карта сайта</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 FloraShop. Все права защищены.
+                </div>
+                <div class="legal-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <i class="fas fa-credit-card" title="Наличные"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Данные заказа
+        let orderData = {
+            customer: {},
+            delivery: {
+                type: 'courier',
+                price: 300,
+                date: '',
+                time: ''
+            },
+            payment: 'cash',
+            summary: {
+                subtotal: 5700,
+                delivery: 300,
+                promo: 0,
+                total: 6000
+            }
+        };
+        
+        // Форматирование цены
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+        
+        // Обновление итогов
+        function updateSummary() {
+            document.getElementById('summarySubtotal').textContent = formatPrice(orderData.summary.subtotal) + ' ₽';
+            document.getElementById('summaryDelivery').textContent = 
+                orderData.delivery.price === 0 ? 'Бесплатно' : formatPrice(orderData.delivery.price) + ' ₽';
+            document.getElementById('summaryPromo').textContent = orderData.summary.promo === 0 ? 
+                '- 0 ₽' : '- ' + formatPrice(orderData.summary.promo) + ' ₽';
+            
+            const total = orderData.summary.subtotal + orderData.delivery.price - orderData.summary.promo;
+            orderData.summary.total = total;
+            document.getElementById('summaryTotal').textContent = formatPrice(total) + ' ₽';
+        }
+        
+        // Валидация формы
+        function validateForm() {
+            let isValid = true;
+            const errors = {};
+            
+            // ФИО
+            const fullName = document.getElementById('fullName').value.trim();
+            if (!fullName) {
+                errors.name = 'Пожалуйста, введите ваше ФИО';
+                isValid = false;
+            }
+            
+            // Телефон
+            const phone = document.getElementById('phone').value.trim();
+            const phoneRegex = /^\+7\s?\(?\d{3}\)?\s?\d{3}-\d{2}-\d{2}$/;
+            if (!phone) {
+                errors.phone = 'Пожалуйста, введите ваш телефон';
+                isValid = false;
+            } else if (!phoneRegex.test(phone)) {
+                errors.phone = 'Введите корректный номер телефона';
+                isValid = false;
+            }
+            
+            // Email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                errors.email = 'Пожалуйста, введите ваш email';
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                errors.email = 'Введите корректный email';
+                isValid = false;
+            }
+            
+            // Адрес
+            const address = document.getElementById('address').value.trim();
+            if (!address) {
+                errors.address = 'Пожалуйста, введите адрес доставки';
+                isValid = false;
+            }
+            
+            // Дата доставки
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            if (!deliveryDate) {
+                errors.date = 'Выберите дату доставки';
+                isValid = false;
+            } else {
+                const selectedDate = new Date(deliveryDate);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                if (selectedDate < today) {
+                    errors.date = 'Нельзя выбрать прошедшую дату';
+                    isValid = false;
+                }
+            }
+            
+            // Время доставки
+            const deliveryTime = document.getElementById('deliveryTime').value;
+            if (!deliveryTime) {
+                errors.time = 'Выберите время доставки';
+                isValid = false;
+            }
+            
+            // Показ ошибок
+            showErrors(errors);
+            
+            return isValid;
+        }
+        
+        // Показать ошибки
+        function showErrors(errors) {
+            // Скрыть все ошибки
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.form-input').forEach(el => {
+                el.classList.remove('error');
+            });
+            
+            // Показать актуальные ошибки
+            for (const [field, message] of Object.entries(errors)) {
+                const errorElement = document.getElementById(`${field}Error`);
+                const inputElement = document.getElementById(field);
+                
+                if (errorElement && inputElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    inputElement.classList.add('error');
+                    inputElement.focus();
+                }
+            }
+        }
+        
+        // Сбор данных формы
+        function collectFormData() {
+            orderData.customer = {
+                fullName: document.getElementById('fullName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                comment: document.getElementById('comment').value.trim()
+            };
+            
+            orderData.delivery.date = document.getElementById('deliveryDate').value;
+            orderData.delivery.time = document.getElementById('deliveryTime').value;
+        }
+        
+        // Подтверждение заказа
+        function confirmOrder() {
+            if (!validateForm()) {
+                alert('Пожалуйста, заполните все обязательные поля корректно');
+                return;
+            }
+            
+            collectFormData();
+            
+            // Показываем подтверждение
+            const confirmBtn = document.getElementById('confirmOrderBtn');
+            const originalText = confirmBtn.innerHTML;
+            
+            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Оформляем заказ...';
+            confirmBtn.disabled = true;
+            
+            // Имитация отправки на сервер
+            setTimeout(() => {
+                // В реальном проекте здесь будет отправка на сервер
+                console.log('Данные заказа:', orderData);
+                
+                // Показываем успех
+                confirmBtn.innerHTML = '<i class="fas fa-check"></i> Заказ оформлен!';
+                confirmBtn.style.background = 'linear-gradient(135deg, #1d8c4a, #27a359)';
+                
+                // Перенаправляем на страницу подтверждения
+                setTimeout(() => {
+                    // В реальном проекте будет переход на страницу подтверждения
+                    alert(`Заказ успешно оформлен!\n\nНомер вашего заказа: #${Math.floor(Math.random() * 10000)}\nСумма к оплате: ${formatPrice(orderData.summary.total)} ₽\n\nОжидайте звонка от менеджера для подтверждения.`);
+                    
+                    // Сбрасываем кнопку
+                    confirmBtn.innerHTML = originalText;
+                    confirmBtn.disabled = false;
+                    confirmBtn.style.background = 'linear-gradient(135deg, #0f6f38, #1d8c4a)';
+                    
+                    // Очищаем корзину и перенаправляем на главную
+                    // window.location.href = 'index.html';
+                }, 1500);
+                
+            }, 2000);
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Установка минимальной даты (сегодня)
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('deliveryDate').min = today;
+            
+            // Автоматическое установление завтрашней даты
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('deliveryDate').value = tomorrow.toISOString().split('T')[0];
+            
+            // Обновление итогов
+            updateSummary();
+            
+            // Выбор способа доставки
+            document.querySelectorAll('.delivery-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Убираем выделение со всех опций
+                    document.querySelectorAll('.delivery-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    
+                    // Добавляем выделение текущей опции
+                    this.classList.add('selected');
+                    
+                    // Обновляем данные доставки
+                    orderData.delivery.type = this.dataset.type;
+                    orderData.delivery.price = parseInt(this.dataset.price);
+                    
+                    // Обновляем итоги
+                    updateSummary();
+                });
+            });
+            
+            // Выбор способа оплаты
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Убираем выделение со всех опций
+                    document.querySelectorAll('.payment-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    
+                    // Добавляем выделение текущей опции
+                    this.classList.add('selected');
+                    
+                    // Обновляем данные оплаты
+                    orderData.payment = this.dataset.type;
+                });
+            });
+            
+            // Маска для телефона
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    if (!value.startsWith('7') && !value.startsWith('8')) {
+                        value = '7' + value;
+                    }
+                    
+                    let formatted = '+7 (';
+                    if (value.length > 1) formatted += value.substring(1, 4);
+                    if (value.length >= 4) formatted += ') ' + value.substring(4, 7);
+                    if (value.length >= 7) formatted += '-' + value.substring(7, 9);
+                    if (value.length >= 9) formatted += '-' + value.substring(9, 11);
+                    
+                    e.target.value = formatted.substring(0, 18);
+                }
+            });
+            
+            // Валидация при вводе
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    const errorId = this.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Анимация при наведении
+            document.querySelectorAll('.delivery-option, .payment-option').forEach(option => {
+                option.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'translateY(-3px)';
+                        this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+                    }
+                });
+                
+                option.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = '';
+                        this.style.boxShadow = '';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

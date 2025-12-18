@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления - Flora</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #0f6f38;
+            --secondary: #1d8c4a;
+            --accent: #ff6b8b;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #27a359;
+            --warning: #ffc107;
+            --danger: #ff4757;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: 
+                linear-gradient(
+                    rgba(0, 0, 0, 0.5),
+                    rgba(0, 0, 0, 0.5)
+                ),
+                url("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80") center/cover no-repeat fixed;
+            color: #f0f0f0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Сайдбар в стиле стеклянного морфизма */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(
+                135deg,
+                rgba(15, 111, 56, 0.85),
+                rgba(29, 140, 74, 0.75)
+            );
+            backdrop-filter: blur(15px);
+            color: white;
+            transition: all 0.3s;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                10px 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-header {
+            padding: 30px 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 25px;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin: 5px 0;
+        }
+
+        .sidebar-menu li i {
+            margin-right: 15px;
+            width: 22px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .sidebar-menu li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu li.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: #fff;
+            color: #fff;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu li.active i {
+            color: #fff;
+        }
+
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Верхняя панель в стиле стекла */
+        .top-bar {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.15),
+                rgba(255, 255, 255, 0.1)
+            );
+            backdrop-filter: blur(15px);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-bar h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .user-info span {
+            font-weight: 500;
+        }
+
+        /* Контент страниц */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Карточки в стиле стекла */
+        .card {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.12),
+                rgba(255, 255, 255, 0.08)
+            );
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Кнопки в стиле сайта */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0f6f38, #1d8c4a);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27a359, #32c371);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4757, #ff6b6b);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #ffd54f);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8, #39c0d6);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Таблицы */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Статусы */
+        .status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 193, 7, 0.1));
+            color: #ffd166;
+            border-color: rgba(255, 193, 7, 0.3);
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.2), rgba(23, 162, 184, 0.1));
+            color: #06d6a0;
+            border-color: rgba(23, 162, 184, 0.3);
+        }
+
+        .status-completed {
+            background: linear-gradient(135deg, rgba(39, 163, 89, 0.2), rgba(39, 163, 89, 0.1));
+            color: #83e99a;
+            border-color: rgba(39, 163, 89, 0.3);
+        }
+
+        .status-cancelled {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 71, 87, 0.1));
+            color: #ff8fa3;
+            border-color: rgba(255, 71, 87, 0.3);
+        }
+
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0f6f38, #1d8c4a);
+        }
+
+        .stat-card.success::before {
+            background: linear-gradient(90deg, #27a359, #32c371);
+        }
+
+        .stat-card.warning::before {
+            background: linear-gradient(90deg, #ffc107, #ffd54f);
+        }
+
+        .stat-card.danger::before {
+            background: linear-gradient(90deg, #ff4757, #ff6b6b);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 15px 0;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Формы */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Изображения в таблице */
+        .table img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                padding: 15px;
+            }
+            
+            .sidebar-menu li {
+                flex: 1;
+                min-width: 140px;
+                text-align: center;
+                flex-direction: column;
+                padding: 12px 10px;
+                margin: 0 5px;
+                border-left: none;
+                border-bottom: 4px solid transparent;
+                border-radius: 10px;
+            }
+            
+            .sidebar-menu li i {
+                margin-right: 0;
+                margin-bottom: 8px;
+                font-size: 1.3rem;
+            }
+            
+            .sidebar-menu li:hover {
+                transform: translateY(-3px);
+                border-left: none;
+                border-bottom-color: rgba(255, 255, 255, 0.3);
+            }
+            
+            .sidebar-menu li.active {
+                border-left: none;
+                border-bottom-color: #fff;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-header {
+                padding: 20px 15px;
+            }
+            
+            .sidebar-menu li {
+                min-width: 120px;
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            
+            .sidebar-menu li i {
+                font-size: 1.2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Сайдбар -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🌸 Flora Manager</h2>
+                <p>Панель управления</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Дашборд</li>
+                <li data-page="categories"><i class="fas fa-folder"></i> Категории</li>
+                <li data-page="products"><i class="fas fa-shopping-bag"></i> Товары</li>
+                <li data-page="orders"><i class="fas fa-shopping-cart"></i> Заказы</li>
+                <li data-page="custom-orders"><i class="fas fa-star"></i> Индивидуальные заказы</li>
+                <li data-page="customers"><i class="fas fa-users"></i> Клиенты</li>
+                <li data-page="settings"><i class="fas fa-cog"></i> Настройки</li>
+            </ul>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Верхняя панель -->
+            <div class="top-bar">
+                <h1 id="page-title">Дашборд</h1>
+                <div class="user-info">
+                    <span>Менеджер: Анна Петрова</span>
+                    <a href="index.html">
+                        <button class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Контент страниц -->
+            <div class="content">
+                <!-- Дашборд -->
+                <div id="dashboard" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Новых заказов</div>
+                            <div class="stat-number">24</div>
+                            <div class="stat-desc">За последние 7 дней</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="stat-label">Выполнено заказов</div>
+                            <div class="stat-number">156</div>
+                            <div class="stat-desc">За этот месяц</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-label">Ожидают подтверждения</div>
+                            <div class="stat-number">8</div>
+                            <div class="stat-desc">Индивидуальные заказы</div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="stat-label">Проблемных заказов</div>
+                            <div class="stat-number">3</div>
+                            <div class="stat-desc">Требуют внимания</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Последние заказы</div>
+                            <button class="btn btn-primary" data-page="orders"><i class="fas fa-list"></i> Все заказы</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>№ заказа</th>
+                                    <th>Клиент</th>
+                                    <th>Дата</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1245</td>
+                                    <td>Иван Сидоров</td>
+                                    <td>15.12.2023</td>
+                                    <td>3 200 ₽</td>
+                                    <td><span class="status status-pending">Ожидает</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1244</td>
+                                    <td>Мария Иванова</td>
+                                    <td>15.12.2023</td>
+                                    <td>4 500 ₽</td>
+                                    <td><span class="status status-confirmed">Подтвержден</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1243</td>
+                                    <td>Петр Козлов</td>
+                                    <td>14.12.2023</td>
+                                    <td>2 800 ₽</td>
+                                    <td><span class="status status-completed">Выполнен</span></td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Категории -->
+                <div id="categories" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Управление категориями</div>
+                            <button class="btn btn-success" id="add-category-btn"><i class="fas fa-plus"></i> Добавить категорию</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Кол-во товаров</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Свадебные букеты</td>
+                                    <td>24</td>
+                                    <td><span class="status status-completed">Активна</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Горшечные растения</td>
+                                    <td>18</td>
+                                    <td><span class="status status-completed">Активна</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Подарочные наборы</td>
+                                    <td>12</td>
+                                    <td><span class="status status-completed">Активна</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Товары -->
+                <div id="products" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Управление товарами</div>
+                            <button class="btn btn-success" id="add-product-btn"><i class="fas fa-plus"></i> Добавить товар</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Изображение</th>
+                                    <th>Название</th>
+                                    <th>Категория</th>
+                                    <th>Цена</th>
+                                    <th>Наличие</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>101</td>
+                                    <td><div style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.2);">IMG</div></td>
+                                    <td>Букет "Нежность"</td>
+                                    <td>Свадебные букеты</td>
+                                    <td>3 200 ₽</td>
+                                    <td>12</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>102</td>
+                                    <td><div style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.2);">IMG</div></td>
+                                    <td>Орхидея Фаленопсис</td>
+                                    <td>Горшечные растения</td>
+                                    <td>2 800 ₽</td>
+                                    <td>8</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Заказы -->
+                <div id="orders" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Управление заказами</div>
+                            <div>
+                                <button class="btn btn-primary"><i class="fas fa-download"></i> Экспорт</button>
+                                <button class="btn btn-info"><i class="fas fa-filter"></i> Фильтры</button>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>№ заказа</th>
+                                    <th>Клиент</th>
+                                    <th>Дата</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1245</td>
+                                    <td>Иван Сидоров</td>
+                                    <td>15.12.2023</td>
+                                    <td>3 200 ₽</td>
+                                    <td><span class="status status-pending">Ожидает</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1244</td>
+                                    <td>Мария Иванова</td>
+                                    <td>15.12.2023</td>
+                                    <td>4 500 ₽</td>
+                                    <td><span class="status status-confirmed">Подтвержден</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Индивидуальные заказы -->
+                <div id="custom-orders" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Индивидуальные заказы на букеты</div>
+                            <button class="btn btn-info"><i class="fas fa-filter"></i> Фильтры</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>№ заказа</th>
+                                    <th>Клиент</th>
+                                    <th>Описание</th>
+                                    <th>Бюджет</th>
+                                    <th>Дата доставки</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#C45</td>
+                                    <td>Анна Ковалева</td>
+                                    <td>Букет на свадьбу в бело-розовых тонах</td>
+                                    <td>7 000 ₽</td>
+                                    <td>20.12.2023</td>
+                                    <td><span class="status status-pending">На рассмотрении</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#C44</td>
+                                    <td>ООО "Старт"</td>
+                                    <td>Композиция для офиса, крупные растения</td>
+                                    <td>5 000 ₽</td>
+                                    <td>18.12.2023</td>
+                                    <td><span class="status status-confirmed">Принят</span></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Клиенты -->
+                <div id="customers" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Управление клиентами</div>
+                            <button class="btn btn-info"><i class="fas fa-download"></i> Экспорт</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Имя</th>
+                                    <th>Email</th>
+                                    <th>Телефон</th>
+                                    <th>Заказов</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1001</td>
+                                    <td>Иван Сидоров</td>
+                                    <td>ivan@example.com</td>
+                                    <td>+7 (999) 123-45-67</td>
+                                    <td>5</td>
+                                    <td><span class="status status-completed">Активен</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1002</td>
+                                    <td>Мария Иванова</td>
+                                    <td>maria@example.com</td>
+                                    <td>+7 (999) 765-43-21</td>
+                                    <td>12</td>
+                                    <td><span class="status status-completed">Активна</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Настройки -->
+                <div id="settings" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Настройки системы</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Название магазина</label>
+                            <input type="text" class="form-control" value="Flora - Цветочный магазин">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email для уведомлений</label>
+                            <input type="email" class="form-control" value="manager@flora.ru">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Телефон магазина</label>
+                            <input type="text" class="form-control" value="+7 (495) 123-45-67">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Минимальная сумма заказа</label>
+                            <input type="number" class="form-control" value="1000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Бесплатная доставка от</label>
+                            <input type="number" class="form-control" value="3000">
+                        </div>
+                        <button class="btn btn-success"><i class="fas fa-save"></i> Сохранить настройки</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Навигация между страницами
+        document.querySelectorAll('.sidebar-menu li').forEach(item => {
+            item.addEventListener('click', function() {
+                // Убираем активный класс у всех пунктов меню
+                document.querySelectorAll('.sidebar-menu li').forEach(li => {
+                    li.classList.remove('active');
+                });
+                
+                // Добавляем активный класс к текущему пункту
+                this.classList.add('active');
+                
+                // Скрываем все страницы
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Показываем выбранную страницу
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                // Обновляем заголовок страницы
+                const titles = {
+                    'dashboard': 'Дашборд',
+                    'categories': 'Управление категориями',
+                    'products': 'Управление товарами',
+                    'orders': 'Управление заказами',
+                    'custom-orders': 'Индивидуальные заказы',
+                    'customers': 'Управление клиентами',
+                    'settings': 'Настройки системы'
+                };
+                
+                document.getElementById('page-title').textContent = titles[pageId];
+            });
+        });
+
+        // Обработчики для кнопок, которые также переключают страницы
+        document.querySelectorAll('[data-page]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const pageId = this.getAttribute('data-page');
+                
+                // Убираем активный класс у всех пунктов меню
+                document.querySelectorAll('.sidebar-menu li').forEach(li => {
+                    li.classList.remove('active');
+                });
+                
+                // Добавляем активный класс к нужному пункту меню
+                document.querySelector(`.sidebar-menu li[data-page="${pageId}"]`).classList.add('active');
+                
+                // Скрываем все страницы
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Показываем выбранную страницу
+                document.getElementById(pageId).classList.add('active');
+                
+                // Обновляем заголовок страницы
+                const titles = {
+                    'dashboard': 'Дашборд',
+                    'categories': 'Управление категориями',
+                    'products': 'Управление товарами',
+                    'orders': 'Управление заказами',
+                    'custom-orders': 'Индивидуальные заказы',
+                    'customers': 'Управление клиентами',
+                    'settings': 'Настройки системы'
+                };
+                
+                document.getElementById('page-title').textContent = titles[pageId];
+            });
+        });
+
+        // Добавление обработчиков для кнопок добавления
+        document.getElementById('add-category-btn').addEventListener('click', function() {
+            alert('Открывается форма добавления категории');
+        });
+
+        document.getElementById('add-product-btn').addEventListener('click', function() {
+            alert('Открывается форма добавления товара');
+        });
+
+        // Добавляем анимацию при наведении на элементы таблицы
+        document.querySelectorAll('.table tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
